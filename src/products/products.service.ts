@@ -22,7 +22,12 @@ export class ProductsService {
   }
 
   findAll() {
-    return this.productRepository.find();
+    return this.productRepository.find({
+      loadEagerRelations: true,
+      relations:{
+        provider: true,
+      }
+    });
   }
 
   findOne(id: string) {
@@ -36,7 +41,7 @@ export class ProductsService {
   }
 
   findByProvider(id: string){
-
+    return "ok";
   }
   
   async update(id: string, updateProductDto: UpdateProductDto) {

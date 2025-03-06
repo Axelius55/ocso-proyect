@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { EmployeesModule } from './employees/employees.module';
 import { ProductsModule } from './products/products.module';
 import {ConfigModule} from '@nestjs/config';
+import { ProvidersModule } from './providers/providers.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),TypeOrmModule.forRoot({
@@ -12,12 +13,12 @@ import {ConfigModule} from '@nestjs/config';
     host: process.env.host,
     port: Number(process.env.DB_port),
     username: 'postgres',
-    password: process.env.pass,
-    database: process.env.name,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     entities: [],
     autoLoadEntities: true,
     synchronize: true,
-  }), EmployeesModule, ProductsModule],
+  }), EmployeesModule, ProductsModule, ProvidersModule],
   controllers: [AppController],
   providers: [AppService],
 })
