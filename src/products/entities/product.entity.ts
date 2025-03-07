@@ -13,7 +13,7 @@ export class Product {
     //@Column({type: 'uuid'})
     //provider: string;
     @ManyToOne(()=> Provider, (provider) => provider.products,{
-        //eager: true,
+       eager: true,
     })
     provider: Provider;
 
