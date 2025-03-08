@@ -11,8 +11,10 @@ import { LocationsModule } from './locations/locations.module';
 import { RegionsModule } from './regions/regions.module';
 import { AuthModule } from './auth/auth.module';
 
+
 @Module({
-  imports: [ConfigModule.forRoot(),TypeOrmModule.forRoot({
+  imports: [
+    ConfigModule.forRoot(),TypeOrmModule.forRoot({
     type: 'postgres',
     host: process.env.host,
     port: Number(process.env.DB_port),
