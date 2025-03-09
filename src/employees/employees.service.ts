@@ -5,6 +5,7 @@ import {v4 as uuid} from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { Repository } from 'typeorm';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Injectable()
 
@@ -17,6 +18,14 @@ export class EmployeesService {
   async create(createEmployeeDto: CreateEmployeeDto) {
     const employee= await this.employeeRepository.save(createEmployeeDto);
     return employee;
+  }
+
+  findByLocation(id: number){
+    return this.employeeRepository.findBy({
+      location:{
+        locationID: id,
+      }
+    })
   }
 
   findAll() {
