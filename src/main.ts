@@ -7,7 +7,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 dotenv.config(); // Cargar las variables de entorno desde .env
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: process.env.allowedOrigin
+    }
+  });
   const config = new DocumentBuilder()
   .setTitle('Ocso API')
   .setDescription('API for ocso management')
