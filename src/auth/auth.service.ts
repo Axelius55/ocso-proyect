@@ -18,16 +18,17 @@ export class AuthService {
   ){}
 
   registerUser(createUserDto: CreateUserDto){
-    createUserDto.userPassword = bcrypt.hashSync(createUserDto.userPassword, 5)
-    this.userRepository.save(createUserDto)
+    createUserDto.userPassword = bcrypt.hashSync(createUserDto.userPassword, 5);
+    this.userRepository.save(createUserDto);
   }
   async loginUser(loginUserDto: LoginUserDto){
+
     const user = await this.userRepository.findOne({
       where:{
-        userEmail: loginUserDto.userEmail
-      }
-    })
-    if(!user) throw new NotFoundException()
+        userEmail: loginUserDto.userEmail,
+      },
+    });
+    if(!user) throw new UnauthorizedException("No estas autorizado")
       const match = await bcrypt.compare(loginUserDto.userPassword, user.userPassword);
       
       if(!match) throw new UnauthorizedException('No estas autorizado');
