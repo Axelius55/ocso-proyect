@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,26 +20,30 @@ import { Cookies } from './decorators/cookies.decorator';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('signup')
-  signup(@Body()createUserDto: CreateUserDto){
-   return this.authService.registerUser(createUserDto)
+  signup(@Body() createUserDto: CreateUserDto) {
+    return this.authService.registerUser(createUserDto);
   }
 
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto, @Res({passthrough:true}) response: Response, @Cookies() cookies: any){
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Res({ passthrough: true }) response: Response,
+    @Cookies() cookies: any,
+  ) {
     const token = await this.authService.loginUser(loginUserDto);
     response.cookie(TOKEN_NAME, token, {
-      httpOnly:false,
+      httpOnly: false,
       secure: true,
       sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
-
   }
 
-  @Patch("/:email")
-  updateUser(@Param('email') userEmail: string ,@Body() updateUserDto: UpdateUserDto){
+  @Patch('/:email')
+  updateUser(
+    @Param('email') userEmail: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.authService.updateUser(userEmail, updateUserDto);
   }
-
-
 }

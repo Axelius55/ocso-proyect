@@ -5,39 +5,45 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Provider } from './entities/provider.entity';
 import { Repository, Like } from 'typeorm';
 
-
 @Injectable()
 export class ProvidersService {
-
   constructor(
     @InjectRepository(Provider)
-    private providerRepository: Repository<Provider>
-
-  ){}
+    private providerRepository: Repository<Provider>,
+  ) {}
 
   create(createProviderDto: CreateProviderDto) {
     return this.providerRepository.save(createProviderDto);
   }
 
   findAll() {
-    return this.providerRepository.find();
-  }
-
-  findOne(id: string) {
-    return this.providerRepository.findOneBy({
-      providerID: id,
+    return this.providerRepository.find({
+      relations: {
+        products: true,
+      },
     });
   }
 
-  async findOneByName(name: string){
+  findOne(id: string) {
+    return this.providerRepository.findOne({
+      where: {
+        providerID: id,
+      },
+      relations: {
+        products: true,
+      },
+    });
+  }
+
+  async findOneByName(name: string) {
     const provider = await this.providerRepository.findBy({
       providerName: Like(`%${name}%`),
-    })
-    if(!provider) throw new NotFoundException
+    });
+    if (!provider) throw new NotFoundException();
     return provider;
   }
 
-   async update(id: string, updateProviderDto: UpdateProviderDto) {
+  async update(id: string, updateProviderDto: UpdateProviderDto) {
     const provider = await this.providerRepository.preload({
       providerID: id,
       ...updateProviderDto,
@@ -49,14 +55,13 @@ export class ProvidersService {
 
     return this.providerRepository.save(provider);
   }
-  
 
   remove(id: string) {
     this.providerRepository.delete({
       providerID: id,
-    })
+    });
     return {
-      message: "Provider eliminado"
-    }
+      message: 'Provider eliminado',
+    };
   }
 }

@@ -17,11 +17,11 @@ export class RolesGuard implements CanActivate {
     const user: User = request.user;
     return this.matchRoles(roles, user.userRoles);
   }
-  matchRoles(roles: string[], userRoles: string[]){
+  matchRoles(roles: string[], userRoles: string[]) {
     let access = false;
-    userRoles.forEach((userRole) =>{
-        if(roles.includes(userRole)) access = true
-    })
+    userRoles.forEach((userRole) => {
+      if (roles.includes(userRole)) access = true;
+    });
     return access;
   }
 }

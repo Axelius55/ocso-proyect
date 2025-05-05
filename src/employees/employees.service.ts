@@ -1,31 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { Repository } from 'typeorm';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Injectable()
-
 export class EmployeesService {
   constructor(
     @InjectRepository(Employee)
-    private employeeRepository: Repository<Employee>
-  ){}
+    private employeeRepository: Repository<Employee>,
+  ) {}
 
   async create(createEmployeeDto: CreateEmployeeDto) {
-    const employee= await this.employeeRepository.save(createEmployeeDto);
+    const employee = await this.employeeRepository.save(createEmployeeDto);
     return employee;
   }
 
-  findByLocation(id: number){
+  findByLocation(id: number) {
     return this.employeeRepository.findBy({
-      location:{
+      location: {
         locationID: id,
-      }
-    })
+      },
+    });
   }
 
   findAll() {
@@ -34,11 +33,11 @@ export class EmployeesService {
 
   findOne(id: string) {
     const employee = this.employeeRepository.findOneBy({
-      employee_id: id
-    })
-  return employee;
+      employee_id: id,
+    });
+    return employee;
   }
-    /*const employee= this.employees.filter((employee) => employee.id === id)[0];
+  /*const employee= this.employees.filter((employee) => employee.id === id)[0];
     return employee;
   }
     */
@@ -50,17 +49,15 @@ export class EmployeesService {
     if (!employeeToUpdate) {
       throw new NotFoundException(`Empleado con ID ${id} no encontrado`);
     }
-  
+
     return await this.employeeRepository.save(employeeToUpdate);
-  
   }
   remove(id: string) {
     this.employeeRepository.delete({
       employee_id: id,
-    })
+    });
     return {
-      message: "Empleado eliminado"
-    }
+      message: 'Empleado eliminado',
+    };
   }
 }
-
