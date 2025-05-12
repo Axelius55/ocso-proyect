@@ -31,10 +31,10 @@ export class CreateEmployeeDto {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @IsObject()
+  @IsString()
   location: Location;
 
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
-  employeePhoto;
+  employeePhoto: string;
 }
