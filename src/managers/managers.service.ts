@@ -32,6 +32,7 @@ export class ManagersService {
       where: { managerID: id },
       relations: {
         location: true,
+        user: true,
       },
     });
     if (!manager) throw new NotFoundException();
